@@ -1,29 +1,18 @@
-// const express = require("express");
 
-// const app = express();
-
-// const port = 3001;
-
-// app.set("port", port);
-
-// app.get("/", (req, res) => {
-//   res.send("../frontend/public/index.html");
-// });
-
-// app.listen(port, () => console.log("Listening on", port));
-
-// module.exports = app;
 var express = require('express')
 var cors = require('cors')
+var { createProxyMiddleware } = require('http-proxy-middleware');
 var app = express()
+var port = 80;
+
 
 app.use(cors())
-// app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.use('/api', createProxyMiddleware({ target: 'https://lms.jdnc.or.kr', changeOrigin: true, secure:false}));
 app.use(express.static('build'));
 app.get('/', function (req, res) {
   res.send('This is CORS-enabled for all origins!')
 })
 
-app.listen(81, function () {
-  console.log('CORS-enabled web server listening on port 80')
+app.listen(port, function () {
+  console.log('CORS-enabled web server listening on port', port)
 })
